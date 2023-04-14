@@ -7,12 +7,11 @@ import MessageContent from './MessageContent';
 import { Role } from '@type/chat';
 import RoleSelector from './RoleSelector';
 
-// const backgroundStyle: { [role in Role]: string } = {
-//   user: 'dark:bg-gray-800',
-//   assistant: 'bg-gray-50 dark:bg-gray-650',
-//   system: 'bg-gray-50 dark:bg-gray-650',
-// };
-const backgroundStyle = ['dark:bg-gray-800', 'bg-gray-50 dark:bg-gray-650'];
+const backgroundStyle: { [role in Role]: string } = {
+  user: 'dark:bg-gray-800',
+  assistant: 'bg-gray-50 dark:bg-gray-650',
+  system: 'bg-gray-50 dark:bg-gray-650',
+};
 
 const Message = React.memo(
   ({
