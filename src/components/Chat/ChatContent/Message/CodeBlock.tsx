@@ -12,9 +12,34 @@ const CodeBlock = ({
 }) => {
   const codeRef = useRef<HTMLElement>(null);
 
+  const handleSave = async () => {
+    const codeString = codeRef.current?.textContent;
+    if (codeString) {
+      const blob = new Blob([codeString], { type: 'text/plain;charset=utf-8' });
+      const filename = `code.${lang}`;
+      if (navigator.msSaveBlob) {
+        // For IE 10+
+        navigator.msSaveBlob(blob, filename);
+      } else {
+        const link = document.createElement('a');
+        if (link.download !== undefined) {
+          // Feature detection
+          // Browsers that support HTML5 download attribute
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', filename);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
+    }
+  };
+
   return (
     <div className='bg-black rounded-md'>
-      <CodeBar lang={lang} codeRef={codeRef} />
+      <CodeBar lang={lang} codeRef={codeRef} onDownload={handleSave} />
       <div className='p-4 overflow-y-auto'>
         <code ref={codeRef} className={`!whitespace-pre hljs language-${lang}`}>
           {codeChildren}
@@ -28,9 +53,11 @@ const CodeBar = React.memo(
   ({
     lang,
     codeRef,
+    onDownload,
   }: {
     lang: string;
     codeRef: React.RefObject<HTMLElement>;
+    onDownload: () => void;
   }) => {
     const [isCopied, setIsCopied] = useState<boolean>(false);
     return (
@@ -59,8 +86,12 @@ const CodeBar = React.memo(
             </>
           )}
         </button>
+        <button className='ml-2' onClick={onDownload}>
+          Download code
+        </button>
       </div>
     );
   }
 );
+
 export default CodeBlock;
