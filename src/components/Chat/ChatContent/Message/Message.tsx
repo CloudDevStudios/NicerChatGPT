@@ -3,7 +3,6 @@ import useStore from '@store/store';
 
 import Avatar from './Avatar';
 import MessageContent from './MessageContent';
-import MergeMessageButton from './MergeMessageButton'; // import MergeMessageButton
 
 import { Role } from '@type/chat';
 import RoleSelector from './RoleSelector';
@@ -54,7 +53,6 @@ const Message = React.memo(
               messageIndex={messageIndex}
               sticky={sticky}
             />
-            <MergeMessageButton onConfirm={() => console.log('Merging message')} /> {/* add MergeMessageButton component */}
           </div>
         </div>
       </div>
